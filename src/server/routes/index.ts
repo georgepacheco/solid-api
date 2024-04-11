@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {StatusCodes} from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { login, loginBodyValidation } from "../shared/middlewares";
 import { SolidController } from "../controllers";
 //import {CidadesController} from './../controllers';
@@ -23,6 +23,8 @@ router.post('/login', loginBodyValidation, login);
 
 
 router.get('/sensors', SolidController.allSensorsValidation, SolidController.getAllSensors)
-router.get('/sensor/:id/observations', SolidController.allSensorsValidation, SolidController.getAllSensors)
+router.get('/sensor/:id/observations', SolidController.observationQueryValidation,
+    SolidController.observationBodyValidation,
+    SolidController.getObservationsBySensor)
 
 export { router };

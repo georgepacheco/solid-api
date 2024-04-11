@@ -7,7 +7,7 @@ import { fetch as fetch2 } from "cross-fetch";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { Bindings } from "rdflib/lib/types";
-import {BindingsStream} from '@comunica/types';
+import { BindingsStream } from '@comunica/types';
 
 
 const bodyValidation: yup.ObjectSchema<IUser> = yup.object().shape({
@@ -40,7 +40,7 @@ export const getAllSensors = async (req: Request<{}, {}, IUser>, res: Response) 
         });
 
     const sensors = await doReturn(bindingsStream);
-    
+
     return res.status(StatusCodes.OK).json(sensors);
 }
 
@@ -90,8 +90,8 @@ async function doReturn(bindingsStream: BindingsStream) {
         sensor.long = binding.get('longitude')?.value;
         sensor.unitType = binding.get('unitType')?.value;
         sensor.sensor = binding.get('sensor')?.value;
-        sensors.push(sensor);       
+        sensors.push(sensor);
     }
-       
+
     return sensors;
 }
