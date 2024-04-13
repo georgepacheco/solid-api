@@ -11,7 +11,7 @@ import { QueryEngine } from "@comunica/query-sparql-solid";
 
 
 interface IParamProps {
-    id?: number;
+    id?: string;
 }
 
 const bodyValidation: yup.ObjectSchema<IUser> = yup.object().shape({
@@ -24,19 +24,19 @@ const bodyValidation: yup.ObjectSchema<IUser> = yup.object().shape({
     podname: yup.string().required()
 });
 
-const queryValidation: yup.ObjectSchema<IObservation> = yup.object().shape({
-    resultValue: yup.string().required(),
-    resultTime: yup.string().required()
+const queryValidation: yup.ObjectSchema<IParamProps> = yup.object().shape({
+    id: yup.string().required(),
 });
 
 export const observationBodyValidation = validation('body', bodyValidation);
-export const observationQueryValidation = validation('query', queryValidation);
+export const observationQueryValidation = validation('params', queryValidation);
 
 export const getObservationsBySensor = async (req: Request<IParamProps, {}, IUser>, res: Response) => {
 
     const authFetch = await login(req, res);
 
-    const sourcePath = process.env.SOLID_IDP + req.body.podname + "/private/store.ttl";
+    console.log(process.env.SOLID_IDP);
+    const sourcePath = req.body.idp + req.body.podname + "/private/store.ttl";
 
     const myEngine = new QueryEngine();
 
@@ -45,7 +45,7 @@ export const getObservationsBySensor = async (req: Request<IParamProps, {}, IUse
     const bindingsStream = await myEngine.queryBindings(query,
         {
             sources: [sourcePath],
-            fetch: authFetch,
+            fetch : authFetch,
             //destination: { type: 'patchSparqlUpdate', value: sourcePath }
         });
 
@@ -68,8 +68,9 @@ async function queryObservationBySensor(sensor: string | undefined) {
         PREFIX ssn: <https://www.w3.org/ns/ssn/>
         PREFIX map: <http://example.com/soft-iot/>
 
-        SELECT ?observation ?resultvalue ?resulttime
+        SELECT ?resultvalue ?resulttime
         WHERE {
+
             map:` + sensor + ` sosa:madeObservation ?observation .
             ?observation sosa:hasSimpleResult ?resultvalue .
             ?observation sosa:resultTime ?resulttime
@@ -84,7 +85,7 @@ async function doReturn(bindingsStream: BindingsStream) {
     let observations: IObservation[] = [];
 
     for await (const binding of bindingsStream) {
-        console.log(binding.toString());
+        // console.log(binding.toString());
         let obs: IObservation = {
             resultValue: '',
             resultTime: ''

@@ -5,7 +5,7 @@ export interface IUser {
     local_webid: string;
     webid: string;
     idp: string;
-    username: string;
+    username: string; //email
     password: string;
     podname: string;
 }

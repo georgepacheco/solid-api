@@ -12,6 +12,7 @@ WORKDIR /app
 # copy configs to /app folder
 COPY package*.json ./
 COPY tsconfig.json ./
+COPY .env ./
 
 # copy source code to /app/src folder
 COPY src /app/src

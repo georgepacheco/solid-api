@@ -10,21 +10,26 @@ router.get('/', (req, res) => {
     return res.send('Hello people!');
 });
 
-router.post('/teste', (req, res) => {
+// router.post('/teste', (req, res) => {
 
-    // return res.send(req.body);
-    // return res.json(req.body);
-    return res.status(StatusCodes.UNAUTHORIZED).json("Não autorizado");
-});
+//     // return res.send(req.body);
+//     // return res.json(req.body);
+//     return res.status(StatusCodes.UNAUTHORIZED).json("Não autorizado");
+// });
 
 //router.post('/cidades', CidadesController.create);
 
 router.post('/login', loginBodyValidation, login);
 
+router.get('/create', SolidController.create);
 
 router.get('/sensors', SolidController.allSensorsValidation, SolidController.getAllSensors)
 router.get('/sensor/:id/observations', SolidController.observationQueryValidation,
     SolidController.observationBodyValidation,
     SolidController.getObservationsBySensor)
+
+router.post ('/save', SolidController.save)
+
+router.post('/remove', SolidController.remove);
 
 export { router };

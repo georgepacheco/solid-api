@@ -30,7 +30,9 @@ export const loginBodyValidation = validation('body', bodyValidation);
 export const login = async (req:Request<{},{},IUser>, res:Response) => {
     // console.log(req.body);
     const authFetch = await getAuthorization(req.body);
+    // console.log ("AuthFetch\n" + authFetch);
     
+    // return res.send(authFetch);
     return authFetch;
 }
 
@@ -44,11 +46,14 @@ export const login = async (req:Request<{},{},IUser>, res:Response) => {
 async function getAuthorization(user: IUser) {
     
     // All these examples assume the server is running at `http://localhost:3000/`
+    // console.log(user);
 
     // First we request the account API controls to find out where we can log in
 
-    // const indexResponse = await fetch(user.idp + '.account/');
-    const indexResponse = await fetch(process.env.SOLID_IDP + '.account/');
+    const indexResponse = await fetch(user.idp + '.account/');
+    // const indexResponse = await fetch(process.env.SOLID_IDP + '.account/');
+    // console.log(indexResponse);
+
     const { controls } = await indexResponse.json();
 
     // And then we log in to the account API
@@ -57,11 +62,14 @@ async function getAuthorization(user: IUser) {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ email: user.username, password: user.password }),
     });
+    // console.log(response);
+
     // This authorization value will be used to authenticate in the next step
     const { authorization } = await response.json();
+    console.log(authorization);
 
     let token = await generateToken(authorization, user);
-    
+    // console.log('token: '+ token);
     return getAuthFetch(token, user);
 }
 

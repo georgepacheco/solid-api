@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { QueryEngine } from '@comunica/query-sparql-solid';
 import { login, validation } from "../../shared/middlewares";
 import { ISensor, IUser } from "../../database/models";
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
 import { fetch as fetch2 } from "cross-fetch";
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
@@ -26,8 +26,9 @@ export const getAllSensors = async (req: Request<{}, {}, IUser>, res: Response) 
 
     const authFetch = await login(req, res);
 
-    const sourcePath = process.env.SOLID_IDP + req.body.podname + "/private/store.ttl";
-
+    // const sourcePath = process.env.SOLID_IDP + req.body.podname + "/private/store.ttl";
+    const sourcePath = req.body.idp + req.body.podname + "/private/store.ttl";
+    
     const myEngine = new QueryEngine();
 
     let query = await querySelectSensorByUser();
@@ -88,7 +89,7 @@ async function doReturn(bindingsStream: BindingsStream) {
         sensor.sensorType = binding.get('sensorType')?.value;
         sensor.lat = binding.get('latitude')?.value;
         sensor.long = binding.get('longitude')?.value;
-        sensor.unitType = binding.get('unitType')?.value;
+        sensor.unitType = binding.get('unitType')?.value;   
         sensor.sensor = binding.get('sensor')?.value;
         sensors.push(sensor);
     }
