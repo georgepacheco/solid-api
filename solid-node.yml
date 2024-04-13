@@ -2,6 +2,8 @@ version: '1.0'
 services:
   solid:
     image: georgepacheco/solid7:1.0
+    env_file:
+      .env
     platform: linux/amd64
     container_name: 'solid'
     volumes:
@@ -12,4 +14,5 @@ services:
       - '3000:3000'      
       - '3333:3333'
     entrypoint: sh -c "npm start -- -c config/file.json -f .data & sleep 20 && node ../fot-solid/dist/index.js"
+    
     
