@@ -1,0 +1,15 @@
+version: '1.0'
+services:
+  solid:
+    image: georgepacheco/solid:7.0.5
+    platform: linux/amd64
+    container_name: 'solid-server'
+    expose:
+      - "3000"
+    ports:
+      - '3000:3000'
+    # Add hostname mappings. An entry with the ip address and hostname is created in /etc/hosts inside containers
+    extra_hosts:
+      - "solid:127.0.0.1"
+    # entrypoint: "npm start -- -b http://solid:3000/ -c config/file.json -f .data"
+    entrypoint: "npm start -- -c config/file.json -f .data"
