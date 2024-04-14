@@ -1,7 +1,7 @@
 version: '1.0'
 services:
   solid:
-    image: georgepacheco/solid:7.0.5
+    image: georgepacheco/solid7:1.0
     platform: linux/amd64
     container_name: 'solid-server'
     expose:

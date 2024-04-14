@@ -1,3 +1,4 @@
+services: 
   # node container with the RESTful Solid API
   node:
     image: georgepacheco/solid-api:1.1
