@@ -1,7 +1,7 @@
 services: 
   # node container with the RESTful Solid API
   node:
-    image: georgepacheco/solid-api:1.1
+    image: georgepacheco/node-api:1.0
     platform: linux/amd64
     container_name: 'node'
     expose:
