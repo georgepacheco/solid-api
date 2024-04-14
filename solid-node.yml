@@ -13,6 +13,7 @@ services:
     ports:
       - '3000:3000'      
       - '3333:3333'
-    entrypoint: sh -c "npm start -- -c config/file.json -f .data & sleep 20 && node ../fot-solid/dist/index.js"
+    # entrypoint: sh -c "npm start -- -c config/file.json -f .data & sleep 20 && node ../fot-solid/dist/index.js"
+    entrypoint: sh -c "npm start -- -c config/file.json -f .data"
     
     
