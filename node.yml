@@ -1,0 +1,9 @@
+  # node container with the RESTful Solid API
+  node:
+    image: georgepacheco/solid-api:1.1
+    platform: linux/amd64
+    container_name: 'node'
+    expose:
+      - "3333"
+    ports:
+      - '3333:3333'
