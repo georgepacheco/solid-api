@@ -37,3 +37,80 @@ obs: além do :id (id do sensor) enviado nos parâmentros, também necessário e
     "password": "",
     "auth": ""
 }
+
+GET /getAuthorization - realiza login no pod do usuário e retorna token de acesso.
+no body deve ser enviado Json com dados de acesso do usuário.
+{
+    "userid": "16523",
+    "local_webid": "http://localhost:3000/Home/profile/card#me",
+    "webid": "http://localhost:3000/Home/profile/card#me",
+    "idp": "http://localhost:3000/",
+    "name": "home",
+    "username": "home@test.com",
+    "podname": "Home",
+    "password": "1234",
+    "auth": "true"
+}
+
+
+POST /save - insere dados no Pod do usuário
+no body deve ser enviado Json com o formato abaixo.
+{
+	"user": {
+			"userid": "16523",
+			"local_webid": "http://localhost:3000/Home/profile/card#me",
+			"webid": "http://localhost:3000/Home/profile/card#me",
+			"idp": "http://localhost:3000/",
+			"name": "home",
+			"username": "home@test.com",
+			"podname": "Home",
+			"password": "1234",
+			"auth": "true"
+	},
+	"data": 
+	[
+			{
+					"code": "post",
+					"method": "flow",
+					"header": {
+							"sensor": "environmentTemperatureSensor",
+							"device": "sc18",
+							"time": {
+									"collect": 10000,
+									"publish": 10000
+							},
+							"location": {
+									"lat": -12.9999101198,
+									"long": -38.5072755132
+							}
+					},
+					"data": [
+							"8",
+							"8"
+					],
+					"datetime_pub": "2023-07-13 17:29:45"
+			}, 
+
+			{
+					"code": "post",
+					"method": "flow",
+					"header": {
+							"sensor": "environmentTemperatureSensor",
+							"device": "sc18",
+							"time": {
+									"collect": 10000,
+									"publish": 10000
+							},
+							"location": {
+									"lat": -12.9999101198,
+									"long": -38.5072755132
+							}
+					},
+					"data": [
+							"9",
+							"9"
+					],
+					"datetime_pub": "2023-07-13 13:21:41"
+			}
+	]
+}

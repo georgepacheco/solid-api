@@ -27,9 +27,14 @@ const bodyValidation: yup.ObjectSchema<IUser> = yup.object().shape({
 export const loginBodyValidation = validation('body', bodyValidation);
 
 
-export const login = async (req:Request<{},{},IUser>, res:Response) => {
+export const login = async (req:Request<{},{},IUser> | IUser, res:Response) => {
     // console.log(req.body);
-    const authFetch = await getAuthorization(req.body);
+        
+    const user: IUser = 'body' in req ? req.body : req;
+
+    const token = await getAuthorization(user);
+
+    const authFetch  = await getAuthFetch(token, user);
     // console.log ("AuthFetch\n" + authFetch);
     
     // return res.send(authFetch);
@@ -43,7 +48,7 @@ export const login = async (req:Request<{},{},IUser>, res:Response) => {
 //     return authFetch;
 // }
 
-async function getAuthorization(user: IUser) {
+export const getAuthorization = async (user: IUser) => {
     
     // All these examples assume the server is running at `http://localhost:3000/`
     // console.log(user);
@@ -66,11 +71,12 @@ async function getAuthorization(user: IUser) {
 
     // This authorization value will be used to authenticate in the next step
     const { authorization } = await response.json();
-    console.log(authorization);
+    // console.log(authorization);
 
     let token = await generateToken(authorization, user);
-    // console.log('token: '+ token);
-    return getAuthFetch(token, user);
+    
+    return token;
+    // return getAuthFetch(token, user);
 }
 
 
@@ -102,11 +108,11 @@ async function generateToken(authorization: any, user: IUser) {
         secret: secret,
         resource: resource
     };
-
+    
     return token;
 }
 
-async function getAuthFetch(token: Token, user: IUser) {
+export const getAuthFetch = async (token: Token, user: IUser) => {
 
 
     // A key pair is needed for encryption.

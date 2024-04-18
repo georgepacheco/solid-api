@@ -35,7 +35,7 @@ export const getObservationsBySensor = async (req: Request<IParamProps, {}, IUse
 
     const authFetch = await login(req, res);
 
-    console.log("Teste .ENV: " + process.env.SOLID_IDP);
+    // console.log("Teste .ENV: " + process.env.SOLID_IDP);
     const sourcePath = req.body.idp + req.body.podname + "/private/store.ttl";
 
     const myEngine = new QueryEngine();

@@ -77,7 +77,7 @@ async function doReturn(bindingsStream: BindingsStream) {
     let sensors: ISensor[] = [];
 
     for await (const binding of bindingsStream) {
-        console.log(binding.toString());
+        // console.log(binding.toString());
         let sensor: ISensor = {
             sensor: '',
             lat: '',
