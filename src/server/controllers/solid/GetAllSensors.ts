@@ -54,9 +54,10 @@ async function querySelectSensorByUser() {
         PREFIX sosa: <http://www.w3.org/ns/sosa/>
         PREFIX ssn: <https://www.w3.org/ns/ssn/>
         
-        SELECT ?sensor ?sensorType ?coverage ?point ?latitude ?longitude ?unitType ?quKind
+        SELECT ?sensor ?parentClass ?sensorType ?coverage ?point ?latitude ?longitude ?unitType ?quKind
         WHERE {
             ?sensor rdfs:subClassOf ssn:SensingDevice .
+            ?sensor rdfs:subClassOf ?parentClass .
             ?sensor rdf:type ?sensorType .
             ?sensor iot-lite:hasCoverage ?coverage .
             ?coverage geo:location ?point .
@@ -80,17 +81,21 @@ async function doReturn(bindingsStream: BindingsStream) {
         // console.log(binding.toString());
         let sensor: ISensor = {
             sensor: '',
-            lat: '',
-            long: '',
             sensorType: '',
-            unitType: ''
+            lat: '',
+            long: '',            
+            unitType: '',
+            quantityKind: '',
+            parentClass: ''
         };
 
+        sensor.sensor = binding.get('sensor')?.value;
         sensor.sensorType = binding.get('sensorType')?.value;
         sensor.lat = binding.get('latitude')?.value;
         sensor.long = binding.get('longitude')?.value;
-        sensor.unitType = binding.get('unitType')?.value;   
-        sensor.sensor = binding.get('sensor')?.value;
+        sensor.unitType = binding.get('unitType')?.value;           
+        sensor.quantityKind = binding.get('quKind')?.value;           
+        sensor.parentClass = binding.get('parentClass')?.value;
         sensors.push(sensor);
     }
 

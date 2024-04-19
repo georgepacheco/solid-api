@@ -3,7 +3,9 @@
 //export const RML_FILE = './src/rml/rml_test.ttl';
 //export const RML_FILE = './src/rml/rml_ssn.ttl';
 
-export const RML_FILE = './src/server/resources/rml/rml_lite.ttl';
+export const RML_LOCAL = './src/server/resources/rml/rml_lite.ttl';
+export const RML_CLOUD = './src/server/resources/rml/rml_lite_cloud.ttl';
+export const RML_TESTE = './src/server/resources/rml/museum-model.rml.ttl';
 
 /**
  * Receive file from Python script

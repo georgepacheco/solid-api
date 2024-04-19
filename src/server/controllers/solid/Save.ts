@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAuthFetch, getAuthorization, login, mapper, preprocess, validation } from "../../shared/middlewares";
+import { getAuthFetch, getAuthorization, login, mapper, preprocess, RML_LOCAL, validation } from "../../shared/middlewares";
 import { IData, IUser } from "../../database/models";
 import * as yup from 'yup';
 import { QueryEngine } from '@comunica/query-sparql-solid';
@@ -56,7 +56,7 @@ export const save = async (req: Request<{}, {}, IDataUser>, res: Response) => {
 
             let data = await preprocess(reqData);
             
-            let rdfFile = await mapper(JSON.stringify(data));
+            let rdfFile = await mapper(JSON.stringify(data), RML_LOCAL);
             
             const authFetch = await login(user, res);
 

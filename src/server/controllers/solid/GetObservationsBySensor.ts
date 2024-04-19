@@ -68,7 +68,7 @@ async function queryObservationBySensor(sensor: string | undefined) {
         PREFIX ssn: <https://www.w3.org/ns/ssn/>
         PREFIX map: <http://example.com/soft-iot/>
 
-        SELECT ?resultvalue ?resulttime
+        SELECT ?observation ?resultvalue ?resulttime
         WHERE {
 
             map:` + sensor + ` sosa:madeObservation ?observation .
@@ -87,10 +87,12 @@ async function doReturn(bindingsStream: BindingsStream) {
     for await (const binding of bindingsStream) {
         // console.log(binding.toString());
         let obs: IObservation = {
+            observationId: '',
             resultValue: '',
             resultTime: ''
         };
 
+        obs.observationId = binding.get('observation')?.value;        
         obs.resultValue = binding.get('resultvalue')?.value;
         obs.resultTime = binding.get('resulttime')?.value;
         observations.push(obs);
