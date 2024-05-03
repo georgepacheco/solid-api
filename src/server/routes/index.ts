@@ -18,6 +18,8 @@ router.get('/sensor/:id/observations', SolidController.observationQueryValidatio
 
 router.get('/getAuthorization', SolidController.userValidation, SolidController.getAuthorizationToken);
 
+router.get('/profile', SolidController.getProfile);
+
 router.post ('/save', SolidController.saveValidation, SolidController.save);
 
 router.post ('/sender', SolidController.sender);
