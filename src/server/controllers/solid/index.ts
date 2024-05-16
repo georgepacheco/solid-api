@@ -4,6 +4,7 @@ import * as getAllSensors from './GetAllSensors';
 import * as getObservations from './GetObservationsBySensor';
 import * as remove from './Remove';
 import * as sender from './DataSender';
+import * as savefot from './SaveFromFot';
 import * as getProfile from './GetProfile';
 import * as teste from './Teste';
 
@@ -16,6 +17,7 @@ export const SolidController = {
     ...remove,
     ...sender,
     ...getProfile,
+    ...savefot,
     ...teste
 };
 

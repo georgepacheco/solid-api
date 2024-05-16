@@ -15,7 +15,6 @@ interface IHeader {
     location?: ILocation;
 }
 
-
 export interface IData {
     code?: string;
     method?: string;
@@ -23,3 +22,20 @@ export interface IData {
     data?: Array<string>;
     date?: string;    
 };
+
+interface IObservation {
+    observationId?: string,
+    resultTime?: string,
+    resultValue?: string
+}
+
+export interface IDataFot {
+    sensor?: string,
+    sensorType?: string,
+    lat?: string,
+    long?: string,
+    parentClass?: string,
+    quantityKind?: string,
+    unityType?: string,
+    observation?: IObservation[];
+}

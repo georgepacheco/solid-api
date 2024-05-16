@@ -22,6 +22,8 @@ router.post('/profile', SolidController.getProfile);
 
 router.post ('/save', SolidController.saveValidation, SolidController.save);
 
+router.post('/savefot', SolidController.saveFromFot);
+
 router.post ('/sender', SolidController.sender);
 
 router.post('/remove', SolidController.remove);

@@ -41,18 +41,8 @@ export const login = async (req:Request<{},{},IUser> | IUser, res:Response) => {
     return authFetch;
 }
 
-// export async function Login(user: User) {
-    
-//     const authFetch = await getAuthorization(user);
-    
-//     return authFetch;
-// }
-
 export const getAuthorization = async (user: IUser) => {
     
-    // All these examples assume the server is running at `http://localhost:3000/`
-    // console.log(user);
-
     // First we request the account API controls to find out where we can log in
 
     const indexResponse = await fetch(user.idp + '.account/');

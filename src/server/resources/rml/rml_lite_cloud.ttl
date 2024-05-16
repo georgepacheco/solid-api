@@ -18,13 +18,15 @@
 map:datasource
     rml:source "input";
     rml:referenceFormulation ql:JSONPath;
-    rml:iterator "$.[*]".
+    rml:iterator "$".
 
 map:SensingDeviceMap a rr:TriplesMap;
     rml:logicalSource map:datasource;
     
-    rr:subjectMap [        
-        rr:template "map:{sensor}";
+    rr:subjectMap [
+        # rr:reference "header.device";
+        # rr:class ssn:SensingDevice;
+        rr:reference "sensor";
     ];
 
     rr:predicateObjectMap [
@@ -63,47 +65,17 @@ map:SensingDeviceMap a rr:TriplesMap;
     ];
 
     rr:predicateObjectMap [
-        rr:predicate sosa:madeObservation;        
+        rr:predicate sosa:madeObservation;
         rr:objectMap [
-            # rr:parentTriplesMap map:ObservationMap;            
-            rr:template "observation:{$.observation.['observationId']}";
-        ];        
-    ].
-
-map:ObservationMap a rr:TriplesMap;
-    rml:logicalSource map:datasource;
-
-    # rml:logicalSource [
-    #     rml:source "input";
-    #     rml:referenceFormulation ql:JSONPath;
-    #     rml:iterator "$.observation.['observationId']";
-    # ]; 
-
-    rr:subjectMap [
-        rr:template "observation:{observationId}";
-        rr:class sosa:Observation;
-    ];
-    
-    rr:predicateObjectMap [
-        rr:predicate sosa:hasSimpleResult;
-        rr:objectMap [
-            rr:reference "resultValue";
+            rr:parentTriplesMap map:ObservationMap;            
         ]
-    ];
-    
-    rr:predicateObjectMap [
-        rr:predicate sosa:resultTime;
-        rr:objectMap [
-            rr:reference "resultTime";
-            rr:datatype xsd:dateTIme
-        ];
     ].
 
 map:CovarageMap a rr:TriplesMap;
     rml:logicalSource map:datasource;
     
     rr:subjectMap [
-        rr:template "covarage:{sensor}";
+        rr:template "covarage:{sensorName}";
         rr:class iot-lite:Coverage;
     ];
     
@@ -114,11 +86,12 @@ map:CovarageMap a rr:TriplesMap;
         ]
     ].
 
+
 map:PointMap a rr:TriplesMap;
     rml:logicalSource map:datasource;
     
     rr:subjectMap [
-        rr:template "point:{sensor}";
+        rr:template "point:{sensorName}";
         rr:class geo:Point;
     ];
     
@@ -139,4 +112,30 @@ map:PointMap a rr:TriplesMap;
     ].
 
 
+map:ObservationMap a rr:TriplesMap;
+    rml:logicalSource [
+        rml:source "input";
+        rml:referenceFormulation ql:JSONPath;
+        rml:iterator "$.observation[*]";
+    ];
+    
+    rr:subjectMap [
+        rr:reference "observationId";
+        rr:class sosa:Observation   
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate sosa:hasSimpleResult;
+        rr:objectMap [
+            rr:reference "resultValue";
+        ]
+    ];
+    
+    rr:predicateObjectMap [
+        rr:predicate sosa:resultTime;
+        rr:objectMap [
+            rr:reference "resultTime";
+            rr:datatype xsd:dateTIme
+        ];
+    ].
     
