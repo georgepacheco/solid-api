@@ -112,15 +112,17 @@ map:PointMap a rr:TriplesMap;
     ].
 
 
+
+map:obsdatasource
+    rml:source "input";
+    rml:referenceFormulation ql:JSONPath;
+    rml:iterator "$.observation[*]".
+
 map:ObservationMap a rr:TriplesMap;
-    rml:logicalSource [
-        rml:source "input";
-        rml:referenceFormulation ql:JSONPath;
-        rml:iterator "$.observation[*]";
-    ];
+    rml:logicalSource map:obsdatasource;
     
-    rr:subjectMap [
-        rr:reference "observationId";
+    rr:subjectMap [        
+        rr:template "observation:{observationId}";
         rr:class sosa:Observation   
     ];
     

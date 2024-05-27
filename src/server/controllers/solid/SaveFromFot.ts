@@ -49,37 +49,45 @@ export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response)
 
     // const user: IUser = req.body.user;
     const reqData: IDataFot | undefined = req.body;
-    // console.log(req.body);
+    const user: IUser = {
+        userid: "16523",
+        local_webid: "http://localhost:3000/Home/profile/card#me",
+        webid: "http://localhost:3000/Home/profile/card#me",
+        idp: "http://localhost:3000/",
+        username: "home@test.com",
+        podname: "Home",
+        password: "1234",
+    }
+
     // if (user != undefined) {
 
     if (reqData != undefined) {
 
-        console.log(reqData);
         // let data = await preprocess(reqData);    
-       
+
         let rdfFile = await mapper(JSON.stringify(reqData), RML_CLOUD);
-        
-        console.log ("rdf file: \n" + rdfFile);
 
-         // const authFetch = await login(user, res);
+        console.log("rdf file: \n" + rdfFile);
 
-        // const sourcePath = user.idp + user.podname + "/private/store.ttl";
+        const authFetch = await login(user, res);
 
-        // const myEngine = new QueryEngine();
+        const sourcePath = user.idp + user.podname + "/private/store.ttl";
 
-        // let query = await queryInsertData(rdfFile);
-        // try {
-        //     await myEngine.queryVoid(query,
-        //         {
-        //             sources: [sourcePath],
-        //             fetch: authFetch,
-        //             //destination: { type: 'patchSparqlUpdate', value: sourcePath }
-        //         });
-        //     return res.status(StatusCodes.OK).send("save");
-        // } catch (error) {
-        //     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
-        // }
-        return res.status(StatusCodes.OK).send("save");
+        const myEngine = new QueryEngine();
+
+        let query = await queryInsertData(rdfFile);
+        try {
+            await myEngine.queryVoid(query,
+                {
+                    sources: [sourcePath],
+                    fetch: authFetch,
+                    //destination: { type: 'patchSparqlUpdate', value: sourcePath }
+                });
+            return res.status(StatusCodes.OK).send("save");
+        } catch (error) {
+            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
+        }
+        // return res.status(StatusCodes.OK).send("save");
     }
     return res.status(StatusCodes.OK).send("savefot undefined data");
     // }
