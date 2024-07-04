@@ -1,5 +1,7 @@
 # Solid API
-API REST para interação com o Community Solid Server
+- API REST para interação com o Community Solid Server
+
+- Utilização na Cloud
 
 # Passo a Passo - Instalação Docker
 1. Clone projeto
