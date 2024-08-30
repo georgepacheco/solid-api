@@ -227,3 +227,5 @@ no body deve ser enviado Json com o formato abaixo.
 			}
 	]
 }
+
+POST /savefot - insere dados no Pod do usuário oriundos da fot
