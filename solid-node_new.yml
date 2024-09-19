@@ -1,19 +1,18 @@
 version: '1.0'
 services:
-  solid:
-    image: georgepacheco/solid-server:1.3
+  solid_cloud:
+    image: georgepacheco/solid-server:1.3.2
     env_file:
       .env
     platform: linux/amd64
-    container_name: 'solid'
+    container_name: 'solid_cloud'
     volumes:
-      - .:/fot-solid
+      - .:/solid
     expose:
       - "3000"
-    ports:
-      - '3000:3000'      
+    ports:         
       - '3333:3333'
-    entrypoint: sh -c "npm start -- -c config/file.json -f .data & sleep 20 && node ../fot-solid/dist/index.js"
-    # entrypoint: sh -c "npm start -- -c config/file.json -f .data"
+    entrypoint: sh -c "npm start -- -c config/file.json -f .data & sleep 20 && node ../solid/dist/index.js"
+    #entrypoint: bash -c "NODE_TLS_REJECT_UNAUTHORIZED=0 npm start -- -b https://192.168.0.111:3010 -c config/file-https.json -f .data --httpsKey config/certs/server.key --httpsCert config/certs/server.crt & sleep 20 & node ../solid/dist/index.js"        
     
     

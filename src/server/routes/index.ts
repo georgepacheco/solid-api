@@ -9,6 +9,10 @@ router.get('/', (req, res) => {
     return res.send('Hello API Node for Community Solid Server!');
 });
 
+router.get('/getFot', (req, res) => {
+    return res.send('Get Fot Test');
+});
+
 router.post('/login', loginBodyValidation, loginExternal);
 
 router.get('/sensors', SolidController.allSensorsValidation, SolidController.getAllSensors);
