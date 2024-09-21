@@ -3,14 +3,15 @@
 //export const RML_FILE = './src/rml/rml_test.ttl';
 //export const RML_FILE = './src/rml/rml_ssn.ttl';
 
+// export const RML_LOCAL = '../solid/dist/rml_lite.ttl';
 export const RML_LOCAL = './src/server/resources/rml/rml_lite.ttl';
-export const RML_CLOUD = './src/server/resources/rml/rml_lite_cloud.ttl';
-export const RML_TESTE = './src/server/resources/rml/museum-model.rml.ttl';
+export const RML_CLOUD = '../solid/dist/rml_lite_cloud.ttl';
+export const RML_TESTE = './src/server/museum-model.rml.ttl';
 
 /**
  * Receive file from Python script
  */
-// export const RML_FILE = '../solid-server/FotSolid/Sensor2Gateway/dist/rml/rml_lite.ttl'; 
+// export const RML_FILE = '../solid/dist/server/resources/rml/rml_lite.ttl'; 
 
 export const RML_OPTIONS = {
     toRDF: true,

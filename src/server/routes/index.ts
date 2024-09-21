@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { StatusCodes } from 'http-status-codes';
-import { login, loginBodyValidation, loginExternal } from "../shared/middlewares";
+import { login, loginBodyValidation} from "../shared/middlewares";
 import { SolidController } from "../controllers";
 
 const router = Router();
@@ -13,7 +13,7 @@ router.get('/getFot', (req, res) => {
     return res.send('Get Fot Test');
 });
 
-router.post('/login', loginBodyValidation, loginExternal);
+// router.post('/login', loginBodyValidation, loginExternal);
 
 router.get('/sensors', SolidController.allSensorsValidation, SolidController.getAllSensors);
 router.get('/sensor/:id/observations', SolidController.observationQueryValidation,

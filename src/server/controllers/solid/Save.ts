@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getAuthFetch, getAuthorization, login, mapper, preprocess, RML_LOCAL, validation } from "../../shared/middlewares";
+import { login, mapper, preprocess, RML_LOCAL, validation } from "../../shared/middlewares";
 import { IData, IUser } from "../../database/models";
 import * as yup from 'yup';
-import { QueryEngine } from '@comunica/query-sparql-solid';
+import { QueryEngine } from "@comunica/query-sparql";
 import { StatusCodes } from "http-status-codes";
 
 interface IDataUser {
@@ -49,7 +49,7 @@ export const save = async (req: Request<{}, {}, IDataUser>, res: Response) => {
 
     const user: IUser = req.body.user;
     const reqData: Array<IData> | undefined = req.body.data;
-
+    
     if (user != undefined) {
 
         if (reqData != undefined) {
@@ -63,7 +63,7 @@ export const save = async (req: Request<{}, {}, IDataUser>, res: Response) => {
             const sourcePath = user.idp + user.podname + "/private/store.ttl";
 
             const myEngine = new QueryEngine();
-
+           
             let query = await queryInsertData(rdfFile);
             try {
                 await myEngine.queryVoid(query,
@@ -74,6 +74,7 @@ export const save = async (req: Request<{}, {}, IDataUser>, res: Response) => {
                     });
                 return res.status(StatusCodes.OK).send("save");        
             } catch (error) {
+                console.log(error);
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
             }                        
         }        

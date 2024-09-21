@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
-    "build": "tsc"
+    "build": "tsc && cp -R src/server/resources/rml/*.ttl dist/"
   },
   "compilerOptions": {
     "module": "NodeNext",
@@ -15,6 +15,7 @@
   "author": "George Pacheco",
   "license": "ISC",
   "dependencies": {
+    "@comunica/query-sparql": "^3.2.3",
     "@comunica/query-sparql-solid": "^3.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

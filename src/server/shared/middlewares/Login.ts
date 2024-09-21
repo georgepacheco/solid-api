@@ -31,38 +31,33 @@ export const login = async (req: Request<{}, {}, IUser> | IUser, res: Response) 
     // console.log(req.body);
 
     const user: IUser = 'body' in req ? req.body : req;
-
-    const token = await getAuthorization(user);
-
-    const authFetch = await getAuthFetch(token, user);
-    // console.log ("AuthFetch\n" + authFetch);
-
-    // return res.send(authFetch);
+    console.log(user);
+    const authFetch = await getAuthorization(user);
+    
     return authFetch;
 }
 
-export const loginExternal = async (req: Request<{}, {}, IUser> | IUser, res: Response) => {
-    // console.log(req.body);
+// export const loginExternal = async (req: Request<{}, {}, IUser> | IUser, res: Response) => {
+//     // console.log(req.body);
 
-    const user: IUser = 'body' in req ? req.body : req;
+//     const user: IUser = 'body' in req ? req.body : req;
 
-    console.log(user);
-    const token = await getAuthorization(user);
+//     console.log(user);
+//     const token = await getAuthorization(user);
 
-    // const accessToken = await getAccessToken(token, user);
+//     // const accessToken = await getAccessToken(token, user);
 
-    return res.send( await getAccessToken(token, user));
+//     return res.send( await getAccessToken(token, user));
 
-}
+// }
 
-export const getAuthorization = async (user: IUser) => {
+export async function getAuthorization(user: IUser) {
+
+    // All these examples assume the server is running at `http://localhost:3000/`
 
     // First we request the account API controls to find out where we can log in
 
     const indexResponse = await fetch(user.idp + '.account/');
-    // const indexResponse = await fetch(process.env.SOLID_IDP + '.account/');
-    // console.log(indexResponse);
-
     const { controls } = await indexResponse.json();
 
     // And then we log in to the account API
@@ -71,16 +66,12 @@ export const getAuthorization = async (user: IUser) => {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ email: user.username, password: user.password }),
     });
-    // console.log(response);
-
     // This authorization value will be used to authenticate in the next step
     const { authorization } = await response.json();
-    // console.log(authorization);
 
     let token = await generateToken(authorization, user);
-
-    return token;
-    // return getAuthFetch(token, user);
+    
+    return getAuthFetch(token, user);
 }
 
 
@@ -116,13 +107,13 @@ async function generateToken(authorization: any, user: IUser) {
     return token;
 }
 
-export const getAuthFetch = async (token: Token, user: IUser) => {
+async function getAuthFetch(token: Token, user: IUser) {
 
 
     // A key pair is needed for encryption.
     // This function from `solid-client-authn` generates such a pair for you.
     const dpopKey = await generateDpopKeyPair();
-
+    
     // These are the ID and secret generated in the previous step.
     // Both the ID and the secret need to be form-encoded.
     const authString = `${encodeURIComponent(token.id)}:${encodeURIComponent(token.secret)}`;
@@ -130,7 +121,7 @@ export const getAuthFetch = async (token: Token, user: IUser) => {
     // http://localhost:3000/.well-known/openid-configuration
     // if your server is hosted at http://localhost:3000/.
     const tokenUrl = user.idp + '.oidc/token';
-
+    
     const response = await fetch(tokenUrl, {
         method: 'POST',
         headers: {
@@ -146,42 +137,8 @@ export const getAuthFetch = async (token: Token, user: IUser) => {
     // The JSON also contains an "expires_in" field in seconds,
     // which you can use to know when you need request a new Access token.
     const { access_token: accessToken } = await response.json();
-
+    
     const authFetch = await buildAuthenticatedFetch(accessToken, { dpopKey });
 
     return authFetch;
-}
-
-export const getAccessToken = async (token: Token, user: IUser) => {
-
-
-    // A key pair is needed for encryption.
-    // This function from `solid-client-authn` generates such a pair for you.
-    const dpopKey = await generateDpopKeyPair();
-
-    // These are the ID and secret generated in the previous step.
-    // Both the ID and the secret need to be form-encoded.
-    const authString = `${encodeURIComponent(token.id)}:${encodeURIComponent(token.secret)}`;
-    // This URL can be found by looking at the "token_endpoint" field at
-    // http://localhost:3000/.well-known/openid-configuration
-    // if your server is hosted at http://localhost:3000/.
-    const tokenUrl = user.idp + '.oidc/token';
-
-    const response = await fetch(tokenUrl, {
-        method: 'POST',
-        headers: {
-            // The header needs to be in base64 encoding.
-            authorization: `Basic ${Buffer.from(authString).toString('base64')}`,
-            'content-type': 'application/x-www-form-urlencoded',
-            dpop: await createDpopHeader(tokenUrl, 'POST', dpopKey),
-        },
-        body: 'grant_type=client_credentials&scope=webid',
-    });
-
-    // This is the Access token that will be used to do an authenticated request to the server.
-    // The JSON also contains an "expires_in" field in seconds,
-    // which you can use to know when you need request a new Access token.
-    const { access_token: accessToken } = await response.json();
-
-    return { accessToken, dpopKey };
 }

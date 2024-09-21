@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAuthFetch, getAuthorization, login, mapper, preprocess, RML_CLOUD, RML_LOCAL, validation } from "../../shared/middlewares";
+import { login, mapper, preprocess, RML_CLOUD, RML_LOCAL, validation } from "../../shared/middlewares";
 import { IData, IDataFot, IUser } from "../../database/models";
 import * as yup from 'yup';
 import { QueryEngine } from '@comunica/query-sparql-solid';
