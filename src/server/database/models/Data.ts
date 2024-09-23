@@ -20,7 +20,7 @@ export interface IData {
     method?: string;
     header?: IHeader;
     data?: Array<string>;
-    date?: string;    
+    date?: string;
 };
 
 interface IObservation {
@@ -29,13 +29,17 @@ interface IObservation {
     resultValue?: string
 }
 
+interface IDataUser {
+    sensor: string;
+    sensorType: string;
+    lat: string;
+    long: string;
+    parentClass: string;
+    quantityKind: string;
+    unityType: string;
+    observation: IObservation[];
+}
+
 export interface IDataFot {
-    sensor?: string,
-    sensorType?: string,
-    lat?: string,
-    long?: string,
-    parentClass?: string,
-    quantityKind?: string,
-    unityType?: string,
-    observation?: IObservation[];
+    data: IDataUser;
 }

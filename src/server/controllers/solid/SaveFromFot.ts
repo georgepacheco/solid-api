@@ -1,49 +1,16 @@
 import { Request, Response } from "express";
-import { login, mapper, preprocess, RML_CLOUD, RML_LOCAL, validation } from "../../shared/middlewares";
+import { login, mapper, RML_CLOUD, SERVER_ADDRESS } from "../../shared/middlewares";
 import { IData, IDataFot, IUser } from "../../database/models";
 import * as yup from 'yup';
-import { QueryEngine } from '@comunica/query-sparql-solid';
+import { QueryEngine } from '@comunica/query-sparql';
 import { StatusCodes } from "http-status-codes";
 
-interface IDataUser {
-    // user: IUser;
-    data?: Array<IDataFot>;
+const extractSensorTypeName = (sensorType: string): String => {
+    // Divide a string por '#' ou '/', e retorna a última parte
+
+    const parts = sensorType.split(/[#/]/);
+    return parts[parts.length - 1];
 }
-
-// const bodyValidation: yup.ObjectSchema<IDataUser> = yup.object().shape({
-//         user: yup.object().shape({
-//         userid: yup.string().required(),
-//         local_webid: yup.string().required(),
-//         webid: yup.string().required(),
-//         idp: yup.string().required(),
-//         username: yup.string().required(),
-//         password: yup.string().required(),
-//         podname: yup.string().required()
-//     }),
-//     data: yup.array().of(
-//         yup.object().shape({
-//             code: yup.string(),
-//             method: yup.string(),
-//             data: yup.array(),
-//             date: yup.string(),
-//             header: yup.object().shape({
-//                 sensor: yup.string(),
-//                 device: yup.string(),
-//                 time: yup.object().shape({
-//                     collect: yup.number(),
-//                     publish: yup.number()
-//                 }),
-//                 location: yup.object().shape({
-//                     lat: yup.number(),
-//                     long: yup.number()
-//                 })
-//             })
-//         })
-//     )
-// });
-
-// export const saveFromFotValidation = validation('body', bodyValidation);
-
 
 export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response) => {
 
@@ -51,11 +18,11 @@ export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response)
     const reqData: IDataFot | undefined = req.body;
     const user: IUser = {
         userid: "16523",
-        local_webid: "http://localhost:3000/Home/profile/card#me",
-        webid: "http://localhost:3000/Home/profile/card#me",
-        idp: "http://localhost:3000/",
-        username: "home@test.com",
-        podname: "Home",
+        local_webid: SERVER_ADDRESS + "DefaultUser/profile/card#me",
+        webid: SERVER_ADDRESS + "DefaultUser/profile/card#me",
+        idp: SERVER_ADDRESS,
+        username: "default@example.com",
+        podname: "DefaultUser",
         password: "1234",
     }
 
@@ -67,11 +34,13 @@ export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response)
 
         let rdfFile = await mapper(JSON.stringify(reqData), RML_CLOUD);
 
-        console.log("rdf file: \n" + rdfFile);
+        // console.log("rdf file: \n" + rdfFile);
 
         const authFetch = await login(user, res);
 
-        const sourcePath = user.idp + user.podname + "/private/store.ttl";
+        let sensorName = extractSensorTypeName(reqData.data.sensorType);
+
+        const sourcePath = user.idp + user.podname + `/private/sensors/${sensorName}.ttl`;
 
         const myEngine = new QueryEngine();
 
@@ -87,7 +56,7 @@ export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response)
         } catch (error) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
         }
-        // return res.status(StatusCodes.OK).send("save");
+
     }
     return res.status(StatusCodes.OK).send("savefot undefined data");
     // }

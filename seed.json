@@ -12,6 +12,13 @@
         "pods": [
           { "name": "Health" }
         ]
-      }
+    },
+    {
+      "email": "default@example.com",
+      "password": "1234",
+      "pods": [
+        { "name": "DefaultUser" }
+      ]
+    }
   ]
   

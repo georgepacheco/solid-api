@@ -1,7 +1,7 @@
 // Importing the required libraries
 import * as rml from 'rocketrml';
 import * as fs from 'fs';
-import {RML_OPTIONS } from './Config';
+import { RML_OPTIONS } from './Config';
 
 export const mapper = async (msg: string, rml_path: string) => {
 
@@ -13,15 +13,14 @@ export const mapper = async (msg: string, rml_path: string) => {
         rml_file = await load_file_to_string(rml_path)
             .catch((err) => {
                 console.error(err);
-            });        
-    }    
-    
+            });
+    }
     // Map the jsonstring to RDF format, on the condition it is loaded correctly.
-    if (!!rml_file) {        
+    if (!!rml_file) {
         var rdf_file = await rml.parseFileLive(rml_file.toString(), { input: msg }, RML_OPTIONS).catch((err) => {
-           console.error(err);           
-        });               
-        
+            console.error(err);
+        });
+
         return rdf_file;
     }
 }
@@ -32,7 +31,7 @@ function load_file_to_string(filename: string) {
         fs.readFile(filename, 'utf8', (err, data) => {
             if (err) {
                 reject(err);
-            } else {                
+            } else {
                 resolve(data.toString());
             }
         });

@@ -26,34 +26,34 @@ map:SensingDeviceMap a rr:TriplesMap;
     rr:subjectMap [
         # rr:reference "header.device";
         # rr:class ssn:SensingDevice;
-        rr:reference "sensor";
+        rr:reference "data.sensor";
     ];
 
     rr:predicateObjectMap [
         rr:predicate rdf:type;
         rr:objectMap [ 
-            rr:reference "sensorType";
+            rr:reference "data.sensorType";
         ];
     ];
 
     rr:predicateObjectMap [
         rr:predicate rdfs:subClassOf;
         rr:objectMap [ 
-            rr:reference "parentClass";
+            rr:reference "data.parentClass";
         ];
     ];
 
     rr:predicateObjectMap [
         rr:predicate iot-lite:hasUnit;
         rr:objectMap [            
-            rr:reference "unitType"
+            rr:reference "data.unitType"
         ];
     ];
 
     rr:predicateObjectMap [
         rr:predicate iot-lite:quantityKind;
         rr:objectMap [            
-            rr:reference "quantityKind"
+            rr:reference "data.quantityKind"
         ];
     ];
 
@@ -75,7 +75,7 @@ map:CovarageMap a rr:TriplesMap;
     rml:logicalSource map:datasource;
     
     rr:subjectMap [
-        rr:template "covarage:{sensorName}";
+        rr:template "covarage:{data.sensor}";
         rr:class iot-lite:Coverage;
     ];
     
@@ -91,14 +91,14 @@ map:PointMap a rr:TriplesMap;
     rml:logicalSource map:datasource;
     
     rr:subjectMap [
-        rr:template "point:{sensorName}";
+        rr:template "point:{data.sensor}";
         rr:class geo:Point;
     ];
     
     rr:predicateObjectMap [
         rr:predicate geo:long;
         rr:objectMap [
-            rr:reference "long";
+            rr:reference "data.long";
             rr:datatype xsd:double
         ]
     ];
@@ -106,17 +106,15 @@ map:PointMap a rr:TriplesMap;
     rr:predicateObjectMap [
         rr:predicate geo:lat;
         rr:objectMap [
-            rr:reference "lat";
+            rr:reference "data.lat";
             rr:datatype xsd:double
         ]
     ].
 
-
-
 map:obsdatasource
     rml:source "input";
     rml:referenceFormulation ql:JSONPath;
-    rml:iterator "$.observation[*]".
+    rml:iterator "$.data.observation[*]".
 
 map:ObservationMap a rr:TriplesMap;
     rml:logicalSource map:obsdatasource;
