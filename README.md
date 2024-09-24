@@ -1,9 +1,7 @@
 # Solid API
-- API REST para interação com o Community Solid Server
+- A REST API and Community Solid Server instance.
 
-- Utilização na Cloud
-
-# Passo a Passo - Instalação Docker
+<!-- # Passo a Passo - Instalação Docker
 1. Clone projeto
 2. Criar arquivo .env com as mesmas variáveis do arquivo .env.example
 3. Build projeto - npm run build
@@ -228,4 +226,4 @@ no body deve ser enviado Json com o formato abaixo.
 	]
 }
 
-POST /savefot - insere dados no Pod do usuário oriundos da fot
+POST /savefot - insere dados no Pod do usuário oriundos da fot -->
