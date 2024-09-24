@@ -38,13 +38,17 @@ export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response)
 
         const authFetch = await login(user, res);
 
-        let sensorName = extractSensorTypeName(reqData.data.sensorType);
+        let sensorName = extractSensorTypeName(reqData.sensorType);
+        console.log("Sensor Name: " + sensorName);
 
         const sourcePath = user.idp + user.podname + `/private/sensors/${sensorName}.ttl`;
+        console.log("Source Path: " + sourcePath);
 
         const myEngine = new QueryEngine();
 
         let query = await queryInsertData(rdfFile);
+        console.log ("Query: " + query);
+
         try {
             await myEngine.queryVoid(query,
                 {
@@ -52,7 +56,7 @@ export const saveFromFot = async (req: Request<{}, {}, IDataFot>, res: Response)
                     fetch: authFetch,
                     //destination: { type: 'patchSparqlUpdate', value: sourcePath }
                 });
-            return res.status(StatusCodes.OK).send("save");
+            return res.status(StatusCodes.OK).send("save from fot");
         } catch (error) {
             return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(error);
         }

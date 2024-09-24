@@ -31,7 +31,7 @@ export const login = async (req: Request<{}, {}, IUser> | IUser, res: Response) 
     // console.log(req.body);
 
     const user: IUser = 'body' in req ? req.body : req;
-    console.log(user);
+    
     const authFetch = await getAuthorization(user);
     
     return authFetch;

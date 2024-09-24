@@ -24,22 +24,19 @@ export interface IData {
 };
 
 interface IObservation {
-    observationId?: string,
-    resultTime?: string,
-    resultValue?: string
-}
-
-interface IDataUser {
-    sensor: string;
-    sensorType: string;
-    lat: string;
-    long: string;
-    parentClass: string;
-    quantityKind: string;
-    unityType: string;
-    observation: IObservation[];
+    observationId?: string;
+    resultTime?: string;
+    resultValue?: string;
 }
 
 export interface IDataFot {
-    data: IDataUser;
+    sensor: string;
+    sensorName: string;
+    sensorType: string;
+    lat: string;
+    long: string;
+    unityType: string;
+    quantityKind: string;
+    parentClass: string;       
+    observation: IObservation[];
 }
